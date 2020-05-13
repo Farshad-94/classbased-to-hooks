@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Personal practice with Hooks based React; changing a class based React app to a Hooks based React.
+
 
 ## Available Scripts
 
