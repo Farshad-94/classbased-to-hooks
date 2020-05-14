@@ -1,34 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import LoadingSpinner from './components/LoadingSpinner';
 import SeasonDisplay from './components/SeasonDisplay';
 
-export default class App extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        lat: null,
-        error: ''
-      };
-    }
+const App = () => {
 
-    componentDidMount() {
-      window.navigator.geolocation.getCurrentPosition(
-        position => this.setState({ lat: position.coords.latitude }),
-        err => this.setState({ error: err.message })
-      );
-    }
+  const [lat, setLat] = useState(null);
+  const [error, setError] = useState('');
 
-  render() {
-    return(
-      <div>
-        {  this.state.error && !this.state.lat ? ( <div> Error: {this.state.error} </div> )
-          : !this.state.error && this.state.lat ? ( <SeasonDisplay lat={this.state.lat} /> )
-          : ( <LoadingSpinner message='Please accept location request'/> )
-        }
-      </div>
+  useEffect(() => {
+    window.navigator.geolocation.getCurrentPosition(
+      position => setLat(position.coords.latitude),
+      err => setError(err.message)
     );
+//empty array means, only run function one time in life cycle of component
+  }, []);
+
+  let content;
+  if (error && !lat) {
+    content = <div> Error: {error} </div>;
+  } else if (!error && lat) {
+    content = <SeasonDisplay lat={lat} />;
+  } else {
+    content = <LoadingSpinner message='Please accept location request'/>;
   }
+
+  return <div className="border red">{content}</div>;
 }
 
 ReactDOM.render(<App />,document.getElementById('root'));
