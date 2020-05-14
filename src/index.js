@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import LoadingSpinner from './components/LoadingSpinner';
 import SeasonDisplay from './components/SeasonDisplay';
+import useLocation from './components/UseLocation';
 
 const App = () => {
 
-  const [lat, setLat] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      position => setLat(position.coords.latitude),
-      err => setError(err.message)
-    );
-//empty array means, only run function one time in life cycle of component
-  }, []);
+  const [lat, error] = useLocation();
 
   let content;
   if (error && !lat) {
